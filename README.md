@@ -40,16 +40,26 @@ Web 监控面板：内置 Python 异步 Web 服务器，通过浏览器实时监
 ## 快速开始
 ### 1. 环境准备
 ```
-# 安装 Rust
+# 安装 Rust 编译器
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# 加载环境变量
+source $HOME/.cargo/env
+
+# 验证安装
+rustc --version
+
 # 安装 Python 依赖
 pip3 install python-dotenv
 ```
 
 ### 2. 编译与配置
 ```
-git clone https://github.com/yourusername/btc-hunter.git
+安装
+git clone https://github.com/hjm31ok/btc-hunter.git
 cd btc-hunter
+
+编译
 cargo build --release
 
 ### 创建 .env 配置文件
@@ -60,6 +70,9 @@ nano .env
 THREAD_COUNT=4
 BATCH_SIZE=100000
 ADDR_FILE=address.txt
+
+运行
+./target/release/btc-hunter
 ```
 
 ### 3. 部署自启服务
