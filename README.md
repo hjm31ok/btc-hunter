@@ -51,6 +51,9 @@ rustc --version
 
 # 安装 Python 依赖
 pip3 install python-dotenv
+
+# 最好安装依赖库
+pip3 install coincurve base58 bech32 python-dotenv
 ```
 
 ### 2. 编译与配置
