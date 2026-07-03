@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"> <!-- 这一行是解决乱码的关键 -->
+    <title>BTC Hunter Dashboard</title>
+    <style>
+        body { background: #0a0a0a; color: #00ff00; font-family: 'Courier New', 'Microsoft YaHei', monospace; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; border: 1px solid #00ff00; padding: 20px; box-shadow: 0 0 10px #00ff00; }
+        h1 { text-align: center; border-bottom: 1px solid #00ff00; padding-bottom: 10px; font-size: 1.5em; }
+        .stat-line { margin: 10px 0; font-size: 1.2em; }
+        .value { color: #fff; }
+        .hit-log { margin-top: 20px; color: #ff0000; border-top: 1px dashed #00ff00; padding-top: 10px; }
+    </style>
+</head>
+<body>
+    <!-- 保持其余部分不变 -->
+    <div class="container">
+        <h1>BTC Hunter V6.0 高性能版</h1>
+        <div id="stats">
+            <div class="stat-line">目标地址: <span id="total_addresses" class="value">-</span></div>
+            <div class="stat-line">活跃线程: <span id="threads" class="value">-</span></div>
+            <hr>
+            <div class="stat-line">运行时间: <span id="running_time" class="value">-</span></div>
+            <div class="stat-line">累计尝试: <span id="total_tried" class="value">-</span></div>
+            <div class="stat-line">当前速度: <span id="speed" class="value">-</span> keys/s</div>
+            <div class="hit-log">中奖记录: <span id="hits">-</span> 条</div>
+        </div>
+    </div>
+    <!-- 脚本部分保持不变 -->
+    <script>
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${h}时 ${m}分 ${s}秒`;
+        }
+        function update() {
+            fetch('/status.json?t=' + Date.now())
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('total_addresses').innerText = data.total_addresses.toLocaleString();
+                    document.getElementById('threads').innerText = data.threads;
+                    document.getElementById('running_time').innerText = formatTime(data.running_time);
+                    document.getElementById('total_tried').innerText = data.total_tried.toLocaleString();
+                    document.getElementById('speed').innerText = Math.round(data.speed).toLocaleString();
+                    document.getElementById('hits').innerText = data.hits;
+                }).catch(e => console.log("等待数据..."));
+        }
+        setInterval(update, 2000);
+        update();
+    </script>
+</body>
+</html>
